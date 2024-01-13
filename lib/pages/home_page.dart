@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:o_social_app/constants/colors/app_colors.dart';
 import 'package:o_social_app/models/post_model.dart';
 import 'package:o_social_app/models/user_model.dart';
+import 'package:o_social_app/pages/chat/chat_page.dart';
+import 'package:o_social_app/pages/chat/massenger.dart';
 import 'package:o_social_app/widgets/post_home_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,7 +41,14 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                  Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                        MassengerPage()),
+                            );
+              },
               icon: const Icon(Icons.message),
             ),
           ]),

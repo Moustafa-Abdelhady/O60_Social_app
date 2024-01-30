@@ -65,7 +65,7 @@ class _MassengerPageState extends State<MassengerPage> {
         // centerTitle: true,
       ),
       body: Container(
-        color: kWhiteColor,
+        // color: kWhiteColor,
         // decoration: BoxDecoration(),
         child: FutureBuilder(
             future: FirebaseFirestore.instance.collection('users').get(),
@@ -81,38 +81,44 @@ class _MassengerPageState extends State<MassengerPage> {
                     itemCount: snapshot.data?.docs.length,
                     itemBuilder: (context, index) {
                       DocumentSnapshot doc = snapshot.data!.docs[index];
-                      return  Column(
-                        children: [
-                          GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>  ChatPage(uId:doc['uId'])),
-                                  );
-                                },
-                                child: ListTile(
-                                  // leading:CircleAvatar(),
-                                  leading: doc['profilePic'] == ""
-                                      ? const CircleAvatar(
-                                          backgroundImage:
-                                              AssetImage('assets/images/man.png'),
-                                        )
-                                      : CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(doc['profilePic']),
-                                        ),
-                                  title: Text(doc['displayName']),
-                                  subtitle: Text('@' + doc['userName']),
+                      return doc['uId'] !=
+                              FirebaseAuth.instance.currentUser?.uid
+                          ? Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChatPage(uId: doc['email'])),
+                                    );
+                                  },
+                                  child: ListTile(
+                                    // leading:CircleAvatar(),
+                                    leading: doc['profilePic'] == ""
+                                        ? const CircleAvatar(
+                                            backgroundImage: AssetImage(
+                                                'assets/images/man.png'),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundImage:
+                                                NetworkImage(doc['profilePic']),
+                                          ),
+                                    title: Text(doc['displayName']),
+                                    subtitle: Text('@' + doc['userName']),
+                                  ),
                                 ),
-                              ),
-                              const Divider(color: Colors.grey,indent:0,endIndent:50)
-                        ],
-                      );
+                                const Divider(
+                                    color: Colors.grey,
+                                    indent: 0,
+                                    endIndent: 50)
+                              ],
+                            )
+                          : const SizedBox();
                     });
               }
-              return const Center(
-                                child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }),
       ),
     );

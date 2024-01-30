@@ -72,7 +72,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      file == null
+                      file == null || file =='assets/images/man.png' as Uint8List
                           ? const CircleAvatar(
                               radius: 70,
                               backgroundImage:

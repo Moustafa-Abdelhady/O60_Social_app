@@ -66,13 +66,15 @@ class _PostCardState extends State<PostCard> {
           children: [
             Row(
               children: [
-                widget.item['postImage'] != ""
+                widget.item['uId'] != userData.uId && userData.profilePic == ""
                     ? const CircleAvatar(
                         backgroundImage: AssetImage('assets/images/man.png'),
                       )
-                    : CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(widget.item['profilePic']),
+                    : userData.profilePic != "" ? CircleAvatar(
+                         backgroundImage:
+                           NetworkImage(userData.profilePic),
+                      ): const CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/man.png'),
                       ),
                 const Gap(10),
                 Column(
@@ -86,7 +88,7 @@ class _PostCardState extends State<PostCard> {
                 const Spacer(),
                 Column(
                   children: [
-                    Text(widget.item['date'].toDate().toString()),
+                    Text(widget.item['date'].toDate().toString().substring(0,16)),
                   ],
                 ),
               ],

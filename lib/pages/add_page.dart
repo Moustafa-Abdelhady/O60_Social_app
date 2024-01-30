@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:o_social_app/constants/colors/app_colors.dart';
 import 'package:o_social_app/models/user_model.dart';
+import 'package:o_social_app/navigation_bar_layout.dart';
 import 'package:o_social_app/pages/home_page.dart';
 import 'package:o_social_app/providers/user_provider.dart';
 import 'package:o_social_app/services/cloud.dart';
@@ -22,7 +23,8 @@ class _AddPageState extends State<AddPage> {
 
   TextEditingController descCont = TextEditingController();
 
-  uploadPost(String uId , String displayName , String userName,String profilePic)async {
+  uploadPost(String uId, String displayName, String userName,
+      String profilePic) async {
     try {
       String res = await CloudMethods().uploadPost(
         description: descCont.text,
@@ -52,7 +54,13 @@ class _AddPageState extends State<AddPage> {
         actions: [
           TextButton(
             onPressed: () {
-              uploadPost(userDetail.uId,userDetail.displayName,userDetail.userName , userDetail.profilePic);
+              uploadPost(userDetail.uId, userDetail.displayName,
+                  userDetail.userName, userDetail.profilePic);
+
+              Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) =>const NavBarLayout()),
+            (route) => false);
             },
             child: const Text(
               "Post",
@@ -107,20 +115,18 @@ class _AddPageState extends State<AddPage> {
                 backgroundColor: kSecondaryColor,
               ),
               onPressed: () async {
-                if (file == null || file == '') {
-                  dynamic myFile = await pickImage() ?? '' as String;
-                } else {
-                Uint8List myFile = await pickImage() ?? '' as File;
-                setState(() {
+                
+               
+                 if (file != null || file != '') {
+                  Uint8List? myFile = await pickImage() ;
+                   setState(() {
                   file = myFile;
-                });
-                }
-                 Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const HomePage()),
-                            );
+                    });
+                  } else {
+                       dynamic myFile =
+                    '' as String ;
+               
+                  }
               },
               child: Icon(
                 semanticLabel: "media",

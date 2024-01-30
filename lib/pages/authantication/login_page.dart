@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(builder: (context) =>const NavBarLayout()),
             (route) => false);
-      } else {
+      } else if (loginRes == "Please enter all fields" || loginRes == null) {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
       }
@@ -119,7 +119,15 @@ class _LoginPageState extends State<LoginPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16))),
                   onPressed: () {
-                    signIn();
+  
+                    if (emailCont.text.isEmpty|| emailCont.text.contains('@') & passwordCont.text.isEmpty || passwordCont.text.length < 8){
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                   content: Center(child: Text('Please enter an valid Mail and password')),
+                       ));
+                    } else {
+                       signIn();
+                          }
+                    
                   },
                   child: Text(
                     'login'.toUpperCase(),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:o_social_app/models/user_model.dart';
 
 class AuthMethods {
@@ -62,8 +63,11 @@ class AuthMethods {
       } else {
         res = "Please enter all fields";
       }
-    } on Exception catch (e) {
+    } on FirebaseAuthException catch (e) {
+      print("FirebaseAuthException : ${e.code}");
       return e.toString();
+    } on PlatformException catch (e){
+      print("Platform exception : ${e.code}");
     }
     return res;
   }

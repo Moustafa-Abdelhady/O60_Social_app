@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:o_social_app/models/message.dart';
 import 'package:o_social_app/models/post_model.dart';
 import 'package:o_social_app/services/storage.dart';
 import 'package:uuid/uuid.dart';
@@ -8,6 +9,10 @@ import 'package:uuid/uuid.dart';
 class CloudMethods {
   CollectionReference posts = FirebaseFirestore.instance.collection('posts');
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference messages =
+      FirebaseFirestore.instance.collection('messages');
+      
+      List<Message> messagesList = [];
 
   uploadPost({
     required String description,
@@ -40,6 +45,39 @@ class CloudMethods {
     }
     return res;
   }
+
+
+
+  sendMessage({required String message, required String email,required String toEmail}) {
+    try {
+      messages.add({
+        'message': message,
+        'createdAt': DateTime.now().toString().substring(10,16 ),
+        'fromId': email,
+        'toId': toEmail,
+      });
+    } on Exception catch (e) {
+      print('something went wrong');
+      return e.toString();
+    }
+  }
+
+
+  getMessages() {
+    messages.orderBy('createdAt', descending: true).snapshots().listen((event) {
+      
+      print(event.docs);
+      messagesList.clear();
+
+      for (var doc in event.docs) {
+        messagesList.add(Message.fromJsson(doc));
+      }
+        print('Success');
+    });
+  }
+
+
+
 
   CommentToPost({
     required String postId,

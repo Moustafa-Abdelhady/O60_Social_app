@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // CollectionReference posts = FirebaseFirestore.instance.collection('posts').snapshots();
     late Stream<QuerySnapshot> postsStream =
-        FirebaseFirestore.instance.collection('posts').snapshots();
+        FirebaseFirestore.instance.collection('posts').orderBy('date',descending: true).snapshots();
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
